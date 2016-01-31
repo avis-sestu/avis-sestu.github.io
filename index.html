@@ -1,0 +1,56 @@
+<html>
+<head>
+<script type="text/javascript">
+
+  function copyToClipboard(text) {
+    window.prompt("Premi Ctrl+C e Invio:", text);
+  }
+
+  function readSingleFile(evt) {
+    //Retrieve the first (and only!) File from the FileList object
+    var f = evt.target.files[0]; 
+
+    if (f) {
+      var r = new FileReader();
+      r.onload = function(e) { 
+        var text = "";
+	      var fileContents = e.target.result;
+
+        var lines = fileContents.split('\n');
+        for(var line = 1; line < lines.length; line++){
+          var number = lines[line].split('\t')[0];
+          text += number + "";
+
+          if (line < lines.length - 1) {
+            text += ";";
+          };
+        }
+
+        document.getElementById('output').value = text;
+
+        copyToClipboard(text);
+        
+      }
+      r.readAsText(f);
+    } else { 
+      alert("Failed to load file");
+    }
+  }
+
+</script>
+</head>
+<body style="font-family:Arial">
+<label for="fileinput">File rubrica:</label>
+<input type="file" id="fileinput" />
+
+<br/><br/>
+<label for="output">Risultato:</label>
+<br/>
+<textarea id="output" cols="80" rows="20">
+</textarea>
+
+<script type="text/javascript">
+  document.getElementById('fileinput').addEventListener('change', readSingleFile, false);
+</script>
+</body>
+</html>
